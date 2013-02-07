@@ -1,6 +1,11 @@
 import pickle
-with open('20000by50dump.txt','rb') as h:
-	alldata = pickle.loads(h.read())
+def loadFile(name):
+    with open(name,'rb') as h:
+        into = pickle.loads(h.read())
+        return into
+def saveFile(name,data):
+    with open(name,'wb') as h:
+	pickle.dump(data,h)
 def sumEntities(data):
     entities={}
     for i in range(len(data)):
@@ -10,12 +15,18 @@ def sumEntities(data):
         x = data[i]["entities"]["results"]["entities"]["entity"]
         if(isinstance(x,list)):
             for i in range(len(x)):
-                if x[i]["text"] in entities.keys():
-                    num = entities[x[i]["text"]]["count"]
-                    entities[x[i]["text"]]["count"] = num + 1
+                tag = x[i]["text"].lower()
+                if tag in entities.keys():
+                    num = entities[tag]["count"]
+                    entities[tag]["count"] = num + 1
                 else:
-                    entities[x[i]["text"]] = {}
-                    entities[x[i]["text"]]["count"]=1
-                    entities[x[i]["text"]]["type"]= x[i]["type"]
+                    entities[tag] = {}
+                    entities[tag]["count"]=1
+                    entities[tag]["type"]= x[i]["type"]
+                    if "disambiguated" in x[i].keys():
+                        entities[tag]["disambiguated"]= x[i]["disambiguated"]
 
     return entities
+
+def combineEntityDicts(x,y):
+    
