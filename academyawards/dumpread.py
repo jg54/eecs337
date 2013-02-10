@@ -5,7 +5,7 @@ def loadFile(name):
         return into
 def saveFile(name,data):
     with open(name,'wb') as h:
-	pickle.dump(data,h)
+        pickle.dump(data,h)
 def sumEntities(data):
     entities={}
     for i in range(len(data)):
@@ -28,5 +28,3 @@ def sumEntities(data):
 
     return entities
 
-def combineEntityDicts(x,y):
-    
