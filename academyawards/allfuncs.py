@@ -14,24 +14,18 @@ def loadFile(name):
         into = pickle.loads(h.read())
         return into
 
-entity = 'Hugh Jackman'
-tallies = {}
-count = 0
-tweets = []
+def trimData(f, twlist, entities): #trims up the data 
+    copye = []
+    for tweet in f:
+       if re.findall( 'best' ,tweet , re.M|re.I):
+           twlist.append(tweet)
 
-f = open('clearTweets.txt')
-for tweet in f:
-   if re.findall( 'best' ,tweet , re.M|re.I):
-       tweets.append(tweet)
-entities = loadFile('first126kentities.txt')
-copye=[]
-for i in entities:
-    copye.append(i)
-
+    for i in entities:
+        copye.append(i)
 	
-for i in copye:
-    if "(" in i or ")" in i or len(i)< 4 or re.match('^[a-z ]+$', i) is None:
-        del entities[i]
+    for i in copye:
+        if "(" in i or ")" in i or len(i)< 4 or re.match('^[a-z ]+$', i) is None:
+            del entities[i] 
 
             
         
@@ -97,7 +91,7 @@ def findWinningMovies(e,f):
             # Entity name
             #print e
     if count>50:
-        print e
+        #print(e)
         return [count,sample]
     
 def findWinningSeries(e,f):
@@ -113,7 +107,7 @@ def findWinningSeries(e,f):
             # Entity name
             #print e
     if count:
-        print e
+        #print e
         return [count,sample]
         
 
@@ -130,7 +124,7 @@ def getNominees(e,f):
             # Entity name
             #print e
     if count:
-        print e
+        #print e
         return [count,sample]
 
 def getPresenters(e,f):
@@ -146,11 +140,62 @@ def getPresenters(e,f):
             # Entity name
             #print e
     if count:
-        print e
+        #print e
         return [count,sample]
     
     
+def runSearch():
+    entity = 'Hugh Jackman'
+    tallies = {}
+    count = 0
+    tweets = []
+    entities = loadFile('allentities.txt')
+    f = open('clearTweets.txt')
 
+    trimData(f, tweets, entities)
+
+    bestActors = []
+    best 
+
+    for i in entities:
+        if ("Movie" == entities[i]["type"]) or ("Person" == entities[i]["type"]):
+            temp = None
+            
+            count = count + 1
+            try:
+                temp = findWinningActors(i,tweets)
+            except:
+                continue
+            if temp:
+                if " " in i:
+                print temp
+                foundstuff.append(temp)
+        else:
+            try:
+                temp = findWinningMovies(i,tweets)
+            except:
+                continue
+            if temp:
+                print temp
+                foundstuff.append(temp)
+    print ("Best Actors and Actresses: \n")
+    print (findWinningActors(entity, tweets))
+    print ("\n Best Movies: \n")
+    print (findWinningMovies(entity, tweets))
+    print ("\n Best Series: \n")
+    print (findWinningSeries(entity, tweets))
+
+    print ("\n Nominees: \n")
+    print (getNominees(entity, tweets))
+
+    print ("\n Presenters: \n")
+    print (getPresenters(entity, tweets))
+    return
+    
+    
+# runSearch()
+    
+    
 
 '''        
 def tcwrapper(f,a,b):
