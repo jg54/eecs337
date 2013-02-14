@@ -133,7 +133,7 @@ def getPresenters(e,f):
     sample = {}
     for tweet in f:
         # this is the best reg exp for getting nominees
-        if re.findall( e+'.*(intro|ointroduced|introduces|introduce|inroducing|presenting|speach).*' ,tweet , re.M|re.I):
+        if re.findall( e+'.*(intro|introduced|introduces|introduce|introducing|presenting|speech).*' ,tweet , re.M|re.I):
             count = count + 1
             sample = tweet
             #print(tweet)
@@ -161,7 +161,7 @@ def runSearch():
     bestSeries = []
     
     count = 0
-    
+    print ("Searching! \n")
     for i in entities:
         if (count == 100):
             break;
@@ -173,7 +173,7 @@ def runSearch():
             except:
                 continue
             if temp:
-                print (temp)
+                #print (temp)
                 bestActors.append(temp)
             else:
                 try:
@@ -181,7 +181,7 @@ def runSearch():
                 except:
                     continue
                 if temp:
-                    print (temp)
+                    #print (temp)
                     nominees.append(temp)
                 else:
                     try:
@@ -189,7 +189,7 @@ def runSearch():
                     except:
                         continue
                     if temp:
-                        print (temp)
+                        #print (temp)
                         presenters.append(temp) 
         elif ("Movie" == entities[i]["type"]):
             temp1 = None
@@ -198,7 +198,7 @@ def runSearch():
             except:
                 continue
             if temp1:
-                print (temp1)
+                #print (temp1)
                 bestMovies.append(temp1)
             else:
                 try:
@@ -206,7 +206,7 @@ def runSearch():
                 except:
                     continue
                 if temp1:
-                    print (temp1)
+                    #print (temp1)
                     bestSeries.append(temp1)
 
     print ("Best Actors and Actresses: \n")
