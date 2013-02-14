@@ -1,5 +1,6 @@
 import re
 import pickle
+
 def find_between( s, first, last ):
     try:
         start = s.index( first ) + len( first )
@@ -98,6 +99,7 @@ def findWinningMovies(e,f):
     if count>50:
         print e
         return [count,sample]
+    
 def findWinningSeries(e,f):
     #f = open('clearTweets.txt')
     count = 0
@@ -115,15 +117,42 @@ def findWinningSeries(e,f):
         return [count,sample]
         
 
+def getNominees(e,f):
+     #f = open('clearTweets.txt')
+    count = 0
+    sample = {}
+    for tweet in f:
+        # this is the best reg exp for getting nominees
+        if re.findall( r'HOPE.'+e+'.WINS' ,tweet , re.M|re.I) or re.findall( e+'.*HOPE .* wins' ,tweet , re.M|re.I):
+            count = count + 1
+            sample = tweet
+            #print(tweet)
+            # Entity name
+            #print e
+    if count:
+        print e
+        return [count,sample]
 
+def getPresenters(e,f):
+     #f = open('clearTweets.txt')
+    count = 0
+    sample = {}
+    for tweet in f:
+        # this is the best reg exp for getting nominees
+        if re.findall( e+'.*(intro|ointroduced|introduces|introduce|inroducing|presenting|speach).*' ,tweet , re.M|re.I):
+            count = count + 1
+            sample = tweet
+            #print(tweet)
+            # Entity name
+            #print e
+    if count:
+        print e
+        return [count,sample]
     
-    #if re.findall( r'(wins|won).*Best' ,tweet , re.M|re.I):
-    #if re.findall( r'Lena Dunham.(wins|won).*Best.*for.*#' ,tweet , re.M|re.I):
-    #if re.findall( r'Lena Dunham.(wins|won).Best.*actor in.*.for.(\"|\').*(\"|\')' ,tweet , re.M|re.I):
+    
 
-    #for nominees
-    #if re.findall( r'I HOPE.*WINS' ,tweet , re.M|re.I):
-        
+
+'''        
 def tcwrapper(f,a,b):
     return f(a,b)
 foundstuff = []
@@ -149,7 +178,6 @@ for i in entities:
             if temp:
                 print temp
                 foundstuff.append(temp)
-    if (k%1000==0):
+    if (k%100==0):
         break
-
-
+'''
