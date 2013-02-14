@@ -33,17 +33,13 @@ def findWinningActors(e,f):
     #f = open('clearTweets.txt')
     count = 0
     sample = {}
-    movieType = ""
-    mediaType = ""
+    #movieType = ""
+    #mediaType = ""
     for tweet in f:
         # this is the best reg exp for getting the winners
         if re.findall( e+'.(wins|won).best.(supporting)* *(actor|actress).in.*for.*#' ,tweet , re.M|re.I):
             count = count + 1
-            #print(tweet)
-            # Entity name
-            #print e
-            #Reward
-            #print "Rewards"
+            """
             reward = find_between(re.findall(r'[\W]in.*for',tweet , re.M|re.I)[0], "in" , "for")
             if re.findall(r'drama',tweet):
                 movieType = "drama"
@@ -59,13 +55,17 @@ def findWinningActors(e,f):
             #movie = find_between(re.findall(r'[\W]for.*#',tweet , re.M|re.I)[0], "for" , "#")
             movie = re.findall(r'best.*for.*[A-Z][a-z]*',tweet , re.M|re.I)
             movie = re.findall(r'[A-Z][a-z]+',movie[0] , re.M)
+            """
             sample = tweet
+            """
     if count:
         moviestr = ""
         for i in movie:
             moviestr = moviestr + i + " "
         obj= {'count':count,'title':moviestr,'sample':sample,'genre':movieType,'media':mediaType}
-        return obj
+        """
+    if count > 50:
+        return [count, sample]
         
 
 
@@ -145,9 +145,9 @@ def getPresenters(e,f):
     
     
 def runSearch():
-    entity = 'Hugh Jackman'
-    tallies = {}
-    count = 0
+    #entity = 'Hugh Jackman'
+    #tallies = {}
+    #count = 0
     tweets = []
     entities = loadFile('allentities.txt')
     f = open('clearTweets.txt')
@@ -155,45 +155,76 @@ def runSearch():
     trimData(f, tweets, entities)
 
     bestActors = []
-    best 
-
+    nominees = []
+    presenters = []
+    bestMovies = []
+    bestSeries = []
+    
+    count = 0
+    
     for i in entities:
-        if ("Movie" == entities[i]["type"]) or ("Person" == entities[i]["type"]):
+        if (count == 100):
+            break;
+        count = count + 1
+        if("Person" == entities[i]["type"]):
             temp = None
-            
-            count = count + 1
             try:
                 temp = findWinningActors(i,tweets)
             except:
                 continue
             if temp:
-                if " " in i:
-                print temp
-                foundstuff.append(temp)
-        else:
+                print (temp)
+                bestActors.append(temp)
+            else:
+                try:
+                    temp = getNominees(i,tweets)
+                except:
+                    continue
+                if temp:
+                    print (temp)
+                    nominees.append(temp)
+                else:
+                    try:
+                        temp = getPresenters(i,tweets)
+                    except:
+                        continue
+                    if temp:
+                        print (temp)
+                        presenters.append(temp) 
+        elif ("Movie" == entities[i]["type"]):
+            temp1 = None
             try:
-                temp = findWinningMovies(i,tweets)
+                temp1 = findWinningMovies(i,tweets)
             except:
                 continue
-            if temp:
-                print temp
-                foundstuff.append(temp)
+            if temp1:
+                print (temp1)
+                bestMovies.append(temp1)
+            else:
+                try:
+                    temp1 = findWinningSeries(i,tweets)
+                except:
+                    continue
+                if temp1:
+                    print (temp1)
+                    bestSeries.append(temp1)
+
     print ("Best Actors and Actresses: \n")
-    print (findWinningActors(entity, tweets))
+    print (bestActors)
     print ("\n Best Movies: \n")
-    print (findWinningMovies(entity, tweets))
+    print (bestMovies)
     print ("\n Best Series: \n")
-    print (findWinningSeries(entity, tweets))
+    print (bestSeries)
 
     print ("\n Nominees: \n")
-    print (getNominees(entity, tweets))
+    print (nominees)
 
     print ("\n Presenters: \n")
-    print (getPresenters(entity, tweets))
+    print (presenters)
     return
     
     
-# runSearch()
+runSearch()
     
     
 
